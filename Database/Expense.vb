@@ -37,7 +37,7 @@ Namespace Database
                     AddCommandParameter(_colPortions, DbType.Byte, .portions)
                     AddCommandParameter(_colObservation, DbType.String, .observation)
                     AddCommandParameter(_colDate, DbType.String, .[date].ToString("yyyy-MM-dd"))
-                    AddCommandParameter(_colExtern, DbType.Byte, _colExtern)
+                    AddCommandParameter(_colExtern, DbType.Byte, .external)
                 End With
                 If bCommand.ExecuteNonQuery() Then
                     bCommand.CommandText = sqlSelectRowId
@@ -54,63 +54,37 @@ Namespace Database
 
         End Sub
 
-        Function Search( _
-            ByVal d1 As Date, ByVal d2 As Date, Optional ByVal payment As UInt32 = 0, Optional ByVal item As UInt32 = 0, Optional ByVal category As UInt32 = 0) _
+        Function Search(ByVal d1 As Date, ByVal d2 As Date, Optional ByVal payment As Enumerators.PaymentMethod = 0, Optional ByVal item As UInt32 = 0, _
+            Optional ByVal category As UInt32 = 0) _
         As List(Of Objects.Expense)
-
-            Dim sqlSelectExpense As String = "SELECT e.id, e.payment_method, e.item, e.quantity, e.value, e.is_unit_price, e.portions, e.observation, ei.description" & _
-                " FROM " & _tableExpense & " e JOIN " & _tableExpenseItem & " ei" & _
-                " ON e.item = ei.id AND strftime('s%', e.date) BETWEEN strftime('s%', :d1) AND strftime('s%', :d2)"
-            Dim expenses As New List(Of Objects.Expense)
-
-            Try
-                bConnection.Open()
-                bCommand = New SQLiteCommand(bConnection)
-
-
-                If payment > 0 Then
-                    sqlSelectExpense &= String.Format(" AND e.{0} = :{0}", _colPaymentMethod)
-                    AddCommandParameter(_colPaymentMethod, DbType.UInt32, category)
-                End If
-                If item > 0 Then
-                    sqlSelectExpense &= String.Format(" e.{0} = :{0}", _colItem)
-                    AddCommandParameter(_colItem, DbType.UInt32, item)
-                End If
-                bCommand.CommandText = sqlSelectExpense
-                bDataReader = bCommand.ExecuteReader()
-                While bDataReader.Read
-                    Dim exp As New Objects.Expense()
-                    With exp
-                        .id = bDataReader(0)
-                        .date = bDataReader(1)
-                        .item = bDataReader(2)
-                        .observation = ""
-                    End With
-                    expenses.Add(exp)
-                End While
-                bDataReader.Close()
-                bConnection.Close()
-            Catch ex As Exception
-                bLog.Record("Expense.Search", ex, Enumerators.Modules.Database)
-            Finally
-                ConnectionClose()
-            End Try
-            Return expenses
-
-        End Function
-
-        Function SearchAll() As List(Of Objects.Expense)
 
             Dim sqlSelectExpense As String = "SELECT e.id id, e.date date, e.is_unit_price is_unit_price, e.item itemid, ei.description itemdescription," & _
                 " ei.expense_category expense_category, ec.description categorydescription, e.quantity quantity, e.multiple multiple, e.observation observation," & _
                 " e.payment_method payment_method, e.value value, e.portions portions, ei.measure_unit measure_unit, ei.allow_multiple allow_multiple," & _
                 " e.extern extern FROM expense e JOIN expense_item ei JOIN expense_category ec" & _
-                " ON e.item = ei.id AND ei.expense_category = ec.id ORDER BY e.date, ei.description"
+                " ON e.item = ei.id AND ei.expense_category = ec.id"
             Dim expenses As New List(Of Objects.Expense)
-
             Try
                 bConnection.Open()
                 bCommand = New SQLiteCommand(bConnection)
+                If payment > 0 Then
+                    sqlSelectExpense &= String.Format(" AND e.{0} = :{0}", _colPaymentMethod)
+                    AddCommandParameter(_colPaymentMethod, DbType.UInt32, category)
+                End If
+                If item > 0 Then
+                    sqlSelectExpense &= String.Format(" AND e.{0} = :{0}", _colItem)
+                    AddCommandParameter(_colItem, DbType.UInt32, item)
+                End If
+                If category > 0 Then
+                    sqlSelectExpense &= " AND ec.id = :category"
+                    AddCommandParameter("category", DbType.UInt32, category)
+                End If
+                If d1 <> Utilities.Consts.noDate AndAlso d2 <> Utilities.Consts.noDate Then
+                    sqlSelectExpense &= " AND strftime('%s', e.date) BETWEEN strftime('%s', :d1) AND strftime('%s', :d2)"
+                    AddCommandParameter("d1", DbType.Date, d1)
+                    AddCommandParameter("d2", DbType.Date, d2)
+                End If
+                sqlSelectExpense &= "ORDER BY e.date, ei.description"
                 bCommand.CommandText = sqlSelectExpense
                 bDataReader = bCommand.ExecuteReader()
                 While bDataReader.Read

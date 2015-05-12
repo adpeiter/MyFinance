@@ -1,14 +1,20 @@
 ﻿Public Class frmAddEditExpense
 
-    Public _expense As New Objects.Expense
 
+#Region "Globals"
+
+    Public _expense As New Objects.Expense
     Private _dbExpense As New Database.Expense
     Private _functions As New Functions
     Private _selectedValue As String
 
+#End Region
+
     Private Sub frmAddEditExpense_Load(sender As Object, e As EventArgs) Handles Me.Load
+
         _functions.FillCbbExpenseItem(cbbExpenseItem, If(IsNothing(_expense.item), 0, _expense.item.id), "Selecione")
         _functions.FillCbbWithEnum(cbbPaymentMethod, GetType(Enumerators.PaymentMethod), _expense.paymentMethod)
+
     End Sub
 
     Private Sub cbbExpenseItem_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbbExpenseItem.SelectedIndexChanged
@@ -20,6 +26,7 @@
     End Sub
 
     Sub EnableMultiple()
+
         _selectedValue = cbbExpenseItem.SelectedValue.ToString
         If _selectedValue.Chars(_selectedValue.Length - 1) <> "0" Then
             chkIsUnitPrice.Checked = True
@@ -66,11 +73,11 @@
                 If .id = 0 Then
                     MessageBox.Show("A despesa não foi salva!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Else
-                    If MessageBox.Show("Despesa salva! Deseja adicionar outra?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) Then
-                        ClearAllFields()
-                        .id = 0
+                    .id = 0
+                    If MessageBox.Show("Despesa salva! Deseja adicionar outra?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                        Add()
                     Else
-                        Close()
+                        Me.Close()
                     End If
                 End If
 
@@ -83,13 +90,20 @@
 
     Public Sub ClearAllFields()
 
-        'dtpDate.Value = Now
         txtQuantity.Clear()
         nudQuantidade.Value = 1
         txtValue.Clear()
         nudPortions.Value = 0
         chkDiferentValues.Checked = False
         txtObservation.Clear()
+
+    End Sub
+
+    Public Sub Add()
+
+        _expense.id = 0
+        ClearAllFields()
+        If Application.OpenForms.OfType(Of frmAddEditExpense).Count = 0 Then Me.ShowDialog()
 
     End Sub
 

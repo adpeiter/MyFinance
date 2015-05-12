@@ -42,13 +42,14 @@ Partial Class frmAddEditExpense
         Me.nudQuantidade = New System.Windows.Forms.NumericUpDown()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.chkExternal = New System.Windows.Forms.CheckBox()
+        Me.lblResult = New System.Windows.Forms.Label()
         CType(Me.nudPortions, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudQuantidade, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnSave
         '
-        Me.btnSave.Location = New System.Drawing.Point(213, 274)
+        Me.btnSave.Location = New System.Drawing.Point(213, 297)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 21)
         Me.btnSave.TabIndex = 9
@@ -225,11 +226,20 @@ Partial Class frmAddEditExpense
         Me.chkExternal.Text = "Gasto externo"
         Me.chkExternal.UseVisualStyleBackColor = True
         '
+        'lblResult
+        '
+        Me.lblResult.AutoSize = True
+        Me.lblResult.Location = New System.Drawing.Point(72, 301)
+        Me.lblResult.Name = "lblResult"
+        Me.lblResult.Size = New System.Drawing.Size(0, 13)
+        Me.lblResult.TabIndex = 22
+        '
         'frmAddEditExpense
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(300, 303)
+        Me.ClientSize = New System.Drawing.Size(300, 330)
+        Me.Controls.Add(Me.lblResult)
         Me.Controls.Add(Me.chkExternal)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.nudQuantidade)
@@ -281,4 +291,5 @@ Partial Class frmAddEditExpense
     Friend WithEvents nudQuantidade As System.Windows.Forms.NumericUpDown
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents chkExternal As System.Windows.Forms.CheckBox
+    Friend WithEvents lblResult As System.Windows.Forms.Label
 End Class

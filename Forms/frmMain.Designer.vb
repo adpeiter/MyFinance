@@ -46,6 +46,15 @@ Partial Class frmMain
         Me.edit = New System.Windows.Forms.DataGridViewImageColumn()
         Me.delete = New System.Windows.Forms.DataGridViewImageColumn()
         Me.btnBuscar = New System.Windows.Forms.Button()
+        Me.dtpDate = New System.Windows.Forms.DateTimePicker()
+        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
+        Me.cbbCategory = New System.Windows.Forms.ComboBox()
+        Me.cbbExpenseItem = New System.Windows.Forms.ComboBox()
+        Me.lblCategory = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtTotal = New System.Windows.Forms.TextBox()
         Me.tsMainMenu.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         CType(Me.dgvExpenses, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -109,7 +118,7 @@ Partial Class frmMain
         '
         'btnNew
         '
-        Me.btnNew.Location = New System.Drawing.Point(745, 12)
+        Me.btnNew.Location = New System.Drawing.Point(905, 36)
         Me.btnNew.Name = "btnNew"
         Me.btnNew.Size = New System.Drawing.Size(75, 23)
         Me.btnNew.TabIndex = 3
@@ -229,18 +238,107 @@ Partial Class frmMain
         '
         'btnBuscar
         '
-        Me.btnBuscar.Location = New System.Drawing.Point(664, 12)
+        Me.btnBuscar.Location = New System.Drawing.Point(824, 36)
         Me.btnBuscar.Name = "btnBuscar"
         Me.btnBuscar.Size = New System.Drawing.Size(75, 23)
         Me.btnBuscar.TabIndex = 4
         Me.btnBuscar.Text = "Buscar"
         Me.btnBuscar.UseVisualStyleBackColor = True
         '
+        'dtpDate
+        '
+        Me.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtpDate.Location = New System.Drawing.Point(660, 10)
+        Me.dtpDate.Name = "dtpDate"
+        Me.dtpDate.Size = New System.Drawing.Size(91, 20)
+        Me.dtpDate.TabIndex = 8
+        '
+        'DateTimePicker1
+        '
+        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DateTimePicker1.Location = New System.Drawing.Point(660, 37)
+        Me.DateTimePicker1.Name = "DateTimePicker1"
+        Me.DateTimePicker1.Size = New System.Drawing.Size(91, 20)
+        Me.DateTimePicker1.TabIndex = 9
+        '
+        'cbbCategory
+        '
+        Me.cbbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbbCategory.FormattingEnabled = True
+        Me.cbbCategory.Location = New System.Drawing.Point(409, 11)
+        Me.cbbCategory.Name = "cbbCategory"
+        Me.cbbCategory.Size = New System.Drawing.Size(213, 21)
+        Me.cbbCategory.TabIndex = 10
+        '
+        'cbbExpenseItem
+        '
+        Me.cbbExpenseItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbbExpenseItem.FormattingEnabled = True
+        Me.cbbExpenseItem.Location = New System.Drawing.Point(409, 38)
+        Me.cbbExpenseItem.Name = "cbbExpenseItem"
+        Me.cbbExpenseItem.Size = New System.Drawing.Size(213, 21)
+        Me.cbbExpenseItem.TabIndex = 11
+        '
+        'lblCategory
+        '
+        Me.lblCategory.AutoSize = True
+        Me.lblCategory.Location = New System.Drawing.Point(354, 16)
+        Me.lblCategory.Name = "lblCategory"
+        Me.lblCategory.Size = New System.Drawing.Size(52, 13)
+        Me.lblCategory.TabIndex = 12
+        Me.lblCategory.Text = "Category:"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(376, 43)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(30, 13)
+        Me.Label1.TabIndex = 13
+        Me.Label1.Text = "Item:"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(633, 14)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(24, 13)
+        Me.Label2.TabIndex = 14
+        Me.Label2.Text = "De:"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(631, 41)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(26, 13)
+        Me.Label3.TabIndex = 15
+        Me.Label3.Text = "Até:"
+        '
+        'txtTotal
+        '
+        Me.txtTotal.BackColor = System.Drawing.SystemColors.Control
+        Me.txtTotal.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtTotal.Location = New System.Drawing.Point(750, 65)
+        Me.txtTotal.Name = "txtTotal"
+        Me.txtTotal.Size = New System.Drawing.Size(230, 13)
+        Me.txtTotal.TabIndex = 16
+        Me.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1045, 509)
+        Me.Controls.Add(Me.txtTotal)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblCategory)
+        Me.Controls.Add(Me.cbbCategory)
+        Me.Controls.Add(Me.cbbExpenseItem)
+        Me.Controls.Add(Me.DateTimePicker1)
+        Me.Controls.Add(Me.dtpDate)
         Me.Controls.Add(Me.btnBuscar)
         Me.Controls.Add(Me.btnNew)
         Me.Controls.Add(Me.dgvExpenses)
@@ -282,5 +380,14 @@ Partial Class frmMain
     Friend WithEvents edit As System.Windows.Forms.DataGridViewImageColumn
     Friend WithEvents delete As System.Windows.Forms.DataGridViewImageColumn
     Friend WithEvents btnBuscar As System.Windows.Forms.Button
+    Friend WithEvents dtpDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents DateTimePicker1 As System.Windows.Forms.DateTimePicker
+    Friend WithEvents cbbCategory As System.Windows.Forms.ComboBox
+    Friend WithEvents cbbExpenseItem As System.Windows.Forms.ComboBox
+    Friend WithEvents lblCategory As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents txtTotal As System.Windows.Forms.TextBox
 
 End Class

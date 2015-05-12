@@ -3,6 +3,8 @@
     Private _dbExpense As New Database.Expense
     Private _expenses As New List(Of Objects.Expense)
     Private _functions As New Functions
+    Private _itemsCount As Integer
+    Private _expensesSum As Double
 
     Private Const _dgvColumnNameId As String = "id"
     Private Const _dgvColumnNameData As String = "dt"
@@ -23,6 +25,8 @@
     Private _currentRow As Int32 = -1
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
+        _functions.FillCbbExpenseCategory(cbbCategory, 0, "Todos")
+        _functions.FillCbbExpenseItem(cbbExpenseItem, 0, "Todos")
         Search()
     End Sub
 
@@ -35,7 +39,7 @@
     End Sub
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
-        AddExpense()
+        frmAddEditExpense.Add()
     End Sub
 
     Sub ViewExpenseItems()
@@ -45,15 +49,6 @@
     Sub ViewExpenseCategories()
         frmExpenseCategories.ShowDialog()
     End Sub
-
-    Sub AddExpense()
-
-        frmAddEditExpense._expense.id = 0
-        frmAddEditExpense.ClearAllFields()
-        frmAddEditExpense.ShowDialog()
-
-    End Sub
-
 
     Sub SetGridRow(ByRef expense As Objects.Expense)
 
@@ -69,7 +64,7 @@
             .Cells(_dgvColumnNameMultiple).Value = expense.multiple
             .Cells(_dgvColumnNameQuantity).Value = expense.quantity
             .Cells(_dgvColumnNameValue).Value = expense.value
-            .Cells(_dgvColumnNameTotalValue).Value = If(expense.isUnitPrice = 0, expense.value, expense.value * expense.quantity)
+            .Cells(_dgvColumnNameTotalValue).Value = If(expense.isUnitPrice = 0, expense.value, expense.value * expense.multiple)
             .Cells(_dgvColumnNameItem).Value = expense.item.description
             .Cells(_dgvColumnNameItemId).Value = expense.item.id
             .Cells(_dgvColumnNamePayment).Value = _functions.GetEnumDescription(expense.paymentMethod)
@@ -82,11 +77,17 @@
 
         dgvExpenses.Rows.Clear()
         _expenses.Clear()
-        _expenses = _dbExpense.SearchAll()
+        _expensesSum = 0
+        _itemsCount = 0
+        _expenses = _dbExpense.Search(dtpDate.Value.Date, DateTimePicker1.Value.Date, 0, If(cbbExpenseItem.SelectedIndex <> -1, cbbExpenseItem.SelectedValue, 0), _
+            If(cbbCategory.SelectedIndex <> -1, cbbCategory.SelectedValue, 0))
         For Each ex In _expenses
             _currentRow = -1
             SetGridRow(ex)
+            _expensesSum += If(ex.isUnitPrice, ex.value * ex.multiple, ex.value)
+            _itemsCount += 1
         Next
+        txtTotal.Text = "Total: " & _expensesSum.ToString("C") & " (" & _itemsCount & " despesas)"
 
 
     End Sub
@@ -134,4 +135,6 @@
     Private Sub dgvExpenses_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvExpenses.CellClick
         CellClick(e.RowIndex, e.ColumnIndex)
     End Sub
+
+
 End Class

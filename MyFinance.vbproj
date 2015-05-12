@@ -149,6 +149,7 @@
     <Compile Include="Objects\Expense.vb" />
     <Compile Include="Objects\ExpenseCategory.vb" />
     <Compile Include="Objects\ExpenseItem.vb" />
+    <Compile Include="Utilities\Consts.vb" />
     <Compile Include="Utilities\Log.vb" />
   </ItemGroup>
   <ItemGroup>
